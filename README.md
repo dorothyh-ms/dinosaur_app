@@ -20,7 +20,7 @@ Use the profile _springdatarepo_ to run this project. This profile uses an H2 da
 
 This project does not use web and console profiles. This project can only be run as a web application and not in the console. 
 
-The profile _test_ is the active profile when running JUnit tests. This profile ensures that data is NOT added to the repository layer via a .sql file. 
+The profile _test_ is the active profile when running tests. This profile ensures that data is NOT added to the repository layer via a .sql file. 
 
 Run tests from the command line with in the directory of this project with `./gradlew test`. 
 Below is an example of a successful output: 
