@@ -65,7 +65,7 @@ Can see "favorite" pages, the "favorite" button, "add" pages, "Save Changes" but
 
 ## Hidden Pages for Unauthorized Users
 - Session viewing history page - http://localhost:8300/sessionhistory
-- - Session viewing history page - http://localhost:8300/dinosaurs/favorites
+- Session viewing history page - http://localhost:8300/dinosaurs/favorites
 - Pages for adding species or digsites - http://localhost:8300/digsites/add, http://localhost:8300/dinosaurs/add
 
 ## Hidden Items for Unauthorized Users
