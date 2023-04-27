@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Session History</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}">
+    </script>
+</head>
+<body>
+<div th:replace="~{fragments/fragments::navigationbar(6)}"></div>
+<div class="container">
+    <h1 class="text-center" th:text="#{sessionhistory.yourSessionHistory}"></h1>
+    <table class="table table-striped">
+        <tr>
+            <th th:text="#{sessionhistory.page}">Page</th>
+            <th th:text="#{sessionhistory.timestamp}">Timestamp</th>
+        </tr>
+        <tr th:each="record: ${records}">
+            <td th:text="${record[1]}"/>
+            <td th:text="${record[0]}"/>
+        </tr>
+    </table>
+</div>
+<div th:replace="~{fragments/fragments::footerDinosaur}"></div>
+</body>
+</html>

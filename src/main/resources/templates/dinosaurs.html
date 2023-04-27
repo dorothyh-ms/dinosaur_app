@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="role" sec:authorize="hasRole('ROLE_ADMIN')" content="admin">
+    <meta name="role" sec:authorize="hasRole('ROLE_USER')" content="user">
+    <meta name="role" sec:authorize="hasRole('ROLE_MODERATOR')" content="moderator">
+    <title>Dinosaurs</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}">
+    </script>
+    <script id='radiobutton-script' th:src="@{/javascript/radiobuttons-click-events.js}"
+            data-radiobuttonOption="dinosaurOption"
+            data-primaryURL="dinosaurs"
+            data-entity="dinosaur"
+            defer></script>
+    <script sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_MODERATOR')" th:src="@{/javascript/update-dinosaur.js}" defer></script>
+</head>
+<body>
+<div th:replace="~{fragments/fragments::navigationbar(3)}"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 bg-dark position-fixed" id="sidebar">
+            <div class="nav flex-column flex-nowrap vh-100">
+                <ul>
+                    <li>Thing 1</li>
+                    <li>Thing 2</li>
+                    <li>Thing 3</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col offset-2" id="main">
+            <div class="row text-center mt-3">
+                <div class="mb-3 col-10">
+                    <header><h1 class="text-center" th:text="#{dinosaurs.dinosaurSpecies}">.</h1></header>
+                </div>
+                <div sec:authorize="isAuthenticated()" class="mb-3 col-2">
+                    <a class="btn btn-warning" th:href="@{dinosaurs/save}">
+                        <i class="fa fa-save"></i>
+                        <span th:text="#{saveToJSONFile}"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col">
+                    <table class="table table-hover mr-1" id="dinosaurTable">
+                        <tr>
+                            <th sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_MODERATOR')"></th>
+                            <th th:text="#{dinosaurs.idNumber}">.</th>
+                            <th th:text="#{dinosaurs.name}">.</th>
+                            <th th:text="#{dinosaurs.scientificName}">.</th>
+                            <th th:text="#{dinosaurs.geologicPeriod}">.
+                            </th>
+                            <th th:text="#{dinosaurs.diet}">.
+                            </th>
+                            <th th:text="#{dinosaurs.numberOfSpecimensFound}">.</th>
+                            <th th:text="#{dinosaurs.numberOfDigSitesFoundIn}">.</th>
+                            <th></th>
+                        </tr>
+                        <tr th:id="${dinosaur.getId()}" th:each="dinosaur: ${dinosaurs}">
+                            <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_MODERATOR')">
+                                <input class="form-check-input" name="dinosaurOption" type="radio"
+                                       th:id="'dinosaurOption_'+${dinosaur.getId()}">
+                            </td>
+                            <td th:text="${dinosaur.getId()}"/>
+                            <td>
+                                <a th:text="${dinosaur.getName()}"
+                                   th:href="@{/dinosaurs/dinosaur(dinosaurId=${dinosaur.getId()})}">Link
+                                </a>
+                            </td>
+                            <td>
+                                <span  th:id="'dinosaur_'+${dinosaur.getId()}+'_scientificName'" th:text="${dinosaur.getScientificName()}"></span>
+                                <input type="text" class="field-dinosaur invisible"
+                                       th:id="'dinosaur_'+${dinosaur.getId()}+'_scientificName_input'"
+                                       th:value="${dinosaur.getScientificName()}">
+                            </td>
+                            <td>
+                                <th:block th:switch="${dinosaur.getPeriodName()}">
+                                    <span th:id="'dinosaur_'+${dinosaur.getId()}+'_period'" th:case="'Cretaceous'" th:text="#{period.cretaceous}"></span>
+                                    <span th:id="'dinosaur_'+${dinosaur.getId()}+'_period'" th:case="'Jurassic'" th:text="#{period.jurassic}"></span>
+                                    <span th:id="'dinosaur_'+${dinosaur.getId()}+'_period'"th:case="'Triassic'" th:text="#{period.triassic}"></span>
+                                </th:block>
+                                <select th:id="'dinosaur_'+${dinosaur.getId()}+'_period_input'" th:name="periodName"
+                                        class="form-select-sm field-dinosaur invisible">
+                                    <option th:text="#{period.triassic}" value="triassic">Triassic</option>
+                                    <option th:text="#{period.jurassic}" value="jurassic">Jurassic</option>
+                                    <option th:text="#{period.cretaceous}" value="cretaceous">Cretaceous</option>
+                                </select>
+                            </td>
+                            <td>
+                                <span th:id="'dinosaur_'+${dinosaur.getId()}+'_diet'" th:text="${dinosaur.getDiet().toString().equals('HERBIVORE')} ? #{diet.herbivore} : #{diet.carnivore}"></span>
+                                <select name="diet" th:id="'dinosaur_'+${dinosaur.getId()}+'_diet_input'"
+                                        class="form-select-sm field-dinosaur invisible" >
+                                    <option th:text="#{diet.herbivore}"
+                                            th:selected="${dinosaur.getDiet().toString().equals('HERBIVORE')}"
+                                            value="herbivore">Herbivore
+                                    </option>
+                                    <option th:text="#{diet.carnivore}"
+                                            th:selected="${dinosaur.getDiet().toString().equals('CARNIVORE')}"
+                                            value="carnivore">Carnivore
+                                    </option>
+                                </select>
+                            </td>
+                            <td>
+                                <span th:id="'dinosaur_'+${dinosaur.getId()}+'_numberOfSpecimens'" th:text="${dinosaur.getNumberSpecimensFound()}"></span>
+                                <input type="number" class="field-dinosaur invisible"
+                                       th:id="'dinosaur_'+${dinosaur.getId()}+'_numberOfSpecimens_input'"
+                                       th:value="${dinosaur.getNumberSpecimensFound()}">
+                            </td>
+                            <td th:text="${dinosaur.getNumberOfDigSites()}"></td>
+                            <td>
+                                <i class="fa fa-heart"></i>
+                                <span th:text="${dinosaur.getNumberOfFavorites()}"></span>
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div th:replace="~{fragments/fragments::createEditDeleteSaveButton('dinosaur')}"></div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/fragments::footerDinosaur}"></div>
+</body>
+</html>

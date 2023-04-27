@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamite Dinosaurs Log In</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}">
+    </script>
+</head>
+<body>
+<div th:replace="~{fragments/fragments::navigationbar(7)}"></div>
+<div class="m-5 container-fluid pb-5">
+    <h1 class="text-center">Log In</h1>
+    <form th:action="@{/login}" method="POST">
+        <div class="row justify-content-center">
+            <div class="mb-3 col-3">
+                <label class="form-label">Username</label>
+                <input id="username" name="username" class="form-control" type='text'>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="mb-3 col-3">
+                <label class="form-label">Password</label>
+                <input id="password" type="password" name="password" class="form-control"></input>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="mb-3 col-3 text-center">
+                <button class="btn btn-primary" type="submit">Log in</button>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <table class="table">
+                    <tr>
+                        <th>Username
+                        </th>
+                        <th>Password
+                        </th>
+                        <th>Role
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>hans</td>
+                        <td>spring</td>
+                        <td>User</td>
+                    </tr>
+                    <tr>
+                        <td>lars</td>
+                        <td>more_spring</td>
+                        <td>User</td>
+                    </tr>
+                    <tr>
+                        <td>toni</td>
+                        <td>cisco</td>
+                        <td>User</td>
+                    </tr>
+                    <tr>
+                        <td>piet</td>
+                        <td>bash</td>
+                        <td>Moderator</td>
+                    </tr>
+                    <tr>
+                        <td>jeroen</td>
+                        <td>python</td>
+                        <td>Moderator</td>
+                    </tr>
+                    <tr>
+                        <td>rony</td>
+                        <td>talend</td>
+                        <td>Moderator</td>
+                    </tr>
+                    <tr>
+                        <td>jan</td>
+                        <td>gangof4</td>
+                        <td>Administrator</td>
+                    </tr>
+                    <tr>
+                        <td>wim</td>
+                        <td>statistics</td>
+                        <td>Administrator</td>
+                    </tr>
+                    <tr>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+
+<div th:replace="~{fragments/fragments::footerDinosaur}"></div>
+</body>
+</html>

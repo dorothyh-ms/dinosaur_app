@@ -1,0 +1,34 @@
+.bold-option {
+    font-weight: bold;
+}
+
+.center-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+body {
+    padding-bottom: 120px;
+}
+
+#digSiteList li {
+    /*display: table*/
+    width: 100%
+}
+
+.field-dinosaur {
+    width:100%;
+}
+
+
+
+.invisible {
+    display: none;
+}
+
+/*#digSiteList #digSiteDetails{*/
+/*    display: table-row*/
+/*}*/

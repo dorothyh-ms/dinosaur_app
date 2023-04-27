@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<footer th:fragment="footerDinosaur" class="fixed-bottom text-center text-lg-start bg-light text-muted">
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+        © 2023 Copyright Dynamite Dinosaurs, Inc
+    </div>
+</footer>
+
+<div sec:authorize="isAuthenticated()" th:fragment="createEditDeleteSaveButton(entity)" class="row">
+    <div class="mb-3 col text-center">
+        <a class="btn btn-success" th:id="'add-'+${entity}">
+            <i class="fa fa-plus-square"></i>
+            <span th:text="#{add}"></span>
+        </a>
+    </div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')" class="mb-3 col text-center">
+        <a class="btn btn-danger disabled" th:id="'delete-'+${entity}">
+            <i class="fa fa-trash"></i>
+            <span th:text="#{delete}"></span>
+        </a>
+    </div>
+    <div sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_MODERATOR')"  class="mb-3 col text-center">
+        <a class="btn btn-primary disabled" th:id="'save-'+${entity}">
+            <i class="fa fa-save"></i>
+            <span th:text="#{save}"></span>
+        </a>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="navigationbar(index)">
+    <div class="container-fluid">
+        <a th:href="@{/}" th:class="${index==0}?'navbar-brand active':'navbar-brand'">Dynamite Dinosaurs!</a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-nav collapse navbar-collapse justify-content-between" id="navbarCollapse">
+            <div class="navbar-nav">
+                <a th:text="#{dinosaurs.digSites}" th:href="@{/digsites}"
+                   th:class="${index==1}?'nav-item nav-link active':'nav-item nav-link'">.</a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/digsites/add}"
+                   th:class="${index==2}?'nav-item nav-link active':'nav-item nav-link'"
+                   th:text="#{dinosaurs.addDigSites}">.</a>
+                <a th:text="#{dinosaurs.dinosaurSpecies}" th:href="@{/dinosaurs}"
+                   th:class="${index==3}?'nav-item nav-link active':'nav-item nav-link'">.</a>
+                <a sec:authorize="isAuthenticated()" th:text="#{dinosaurs.addDinosaurSpecies}" th:href="@{/dinosaurs/add}"
+                   th:class="${index==4}?'nav-item nav-link active':'nav-item nav-link'">Add Dinosaur Species</a>
+                <a sec:authorize="isAuthenticated()" th:text="#{dinosaurs.favorites}" th:href="@{/dinosaurs/favorites}"
+                   th:class="${index==5}?'nav-item nav-link active':'nav-item nav-link'">My Favorites</a>
+                <a sec:authorize="isAuthenticated()" th:text="#{sessionhistory.view}" th:href="@{/sessionhistory}"
+                   th:class="${index==6}?'nav-item nav-link active':'nav-item nav-link'">My Session History</a>
+            </div>
+            <div class="navbar-nav">
+                <span sec:authorize="isAuthenticated()" class="me-3 nav-item navbar-text">Hi, <span
+                        sec:authentication="name"></span></span>
+                <form sec:authorize="isAuthenticated()" class="d-flex" th:action="@{/logout}" th:method="POST">
+                    <button type="submit" class="btn btn-secondary">Sign out</button>
+                </form>
+                <a sec:authorize="!isAuthenticated()" class="nav-link nav-item" th:href="@{/login}"
+                   th:classappend="${index==7} ? 'active' : ''">Sign in</a>
+            </div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

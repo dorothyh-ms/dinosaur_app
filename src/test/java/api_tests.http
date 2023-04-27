@@ -1,0 +1,136 @@
+### Get one record - OK
+GET http://localhost:8300/api/dinosaurs/1
+Accept: application/json
+
+### Get one record - not found
+GET http://localhost:8300/api/dinosaurs/100
+Accept: application/json
+
+### Get all records - OK
+GET http://localhost:8300/api/dinosaurs/
+Accept: application/json
+
+### Get all linked entities of record - OK
+GET http://localhost:8300/api/dinosaurs/3/digsites
+Accept: application/json
+
+### Get all linked entities of record - no content
+GET http://localhost:8300/api/dinosaurs/9/digsites
+Accept: application/json
+
+### Get all linked entities of record - not found
+GET http://localhost:8300/api/dinosaurs/100/digsites
+Accept: application/json
+
+
+
+
+### Delete record - no content - user
+//@no-cookie-jar
+DELETE http://localhost:8300/api/dinosaurs/5
+Cookie: JSESSIONID=74DA872EADC8917C11E5D3EA0EB4E889
+X-CSRF-TOKEN: 00b3abeb-d689-4f6c-ab0a-8793bef897f8
+
+
+
+### Delete record - not found
+//@no-cookie-jar
+DELETE http://localhost:8300/api/dinosaurs/100
+Cookie: JSESSIONID=74DA872EADC8917C11E5D3EA0EB4E889
+X-CSRF-TOKEN: 00b3abeb-d689-4f6c-ab0a-8793bef897f8
+
+### Create new record - created
+//@no-cookie-jar
+POST http://localhost:8300/api/dinosaurs
+Accept: application/json
+Content-Type: application/json
+Cookie: JSESSIONID=51D8D12AD6EEAB52155A1715205D6029
+X-CSRF-TOKEN: fe97dcf9-ce36-4bf4-aedc-5901c7941e5b
+
+{
+  "name": "Springosaur",
+  "scientificName": "Springosaurus examplus",
+  "numberOfSpecimensFound": 10,
+  "image":"https://i.natgeofe.com/n/9b87dda3-9946-4a1c-a97f-c21f73ced888/Meraxes-CREDIT-Carlos-Papolio_4x3.jpg",
+  "dietName":"Carnivore",
+  "periodName":"Cretaceous",
+  "digSiteIdsDatesFound": {
+    "1" : "2022-01-01",
+    "2" : "2022-02-14",
+    "3" : "2022-03-17"
+  }
+}
+
+
+### Create new record - bad request
+//@no-cookie-jar
+POST http://localhost:8300/api/dinosaurs/
+Accept: application/json
+Content-Type: application/json
+Cookie: JSESSIONID=74DA872EADC8917C11E5D3EA0EB4E889
+X-CSRF-TOKEN: 00b3abeb-d689-4f6c-ab0a-8793bef897f8
+
+{
+  "name": "Springosaur Bad Example!",
+  "scientificName": "Springosaurus",
+  "numberOfSpecimensFound": -1,
+  "image":"https://i.natgeofe.com/n/9b87dda3-9946-4a1c-a97f-c21f73ced888/Meraxes-CREDIT-Carlos-Papolio_4x3.jpg",
+  "dietName":"Vegetarian!",
+  "periodName":"right now",
+  "digSiteIdsDatesFound": {
+    "1" : "2022-01-01",
+    "2" : "2022-02-14",
+    "3" : "2022-03-17"
+  }
+}
+
+
+### Update record - no content
+//@no-cookie-jar
+PATCH http://localhost:8300/api/dinosaurs/1
+Content-Type: application/json
+Cookie: JSESSIONID=74DA872EADC8917C11E5D3EA0EB4E889
+X-CSRF-TOKEN: 00b3abeb-d689-4f6c-ab0a-8793bef897f8
+
+{
+  "scientificName" : "springosaurus booticus",
+  "numberOfSpecimensFound" : 100,
+  "periodName" : "cretaceous",
+  "dietName" : "herbivore"
+}
+
+### Update record - not found
+//@no-cookie-jar
+PATCH http://localhost:8300/api/dinosaurs/100
+Content-Type: application/json
+Cookie: JSESSIONID=74DA872EADC8917C11E5D3EA0EB4E889
+X-CSRF-TOKEN: 00b3abeb-d689-4f6c-ab0a-8793bef897f8
+
+{
+  "scientificName" : "springosaurus booticus",
+  "numberOfSpecimensFound" : 100,
+  "periodName" : "cretaceous",
+  "dietName" : "herbivore"
+}
+
+
+
+### Retrieve record in XML format
+GET http://localhost:8300/api/dinosaurs/1
+Accept: application/xml
+
+### Post favorite of record - no content - user
+//@no-cookie-jar
+POST http://localhost:8300/api/dinosaurs/5/favorites
+Cookie: JSESSIONID=74DA872EADC8917C11E5D3EA0EB4E889
+X-CSRF-TOKEN: 00b3abeb-d689-4f6c-ab0a-8793bef897f8
+
+
+
+#### Delete favorite of record - no content - user
+//@no-cookie-jar
+DELETE http://localhost:8300/api/dinosaurs/5/favorites
+Cookie: JSESSIONID=74DA872EADC8917C11E5D3EA0EB4E889
+X-CSRF-TOKEN: 00b3abeb-d689-4f6c-ab0a-8793bef897f8
+
+

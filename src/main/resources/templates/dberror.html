@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Database Error</title>
+    <link th:rel="stylesheet" th:href="@{/css/style.css}">
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css} "/>
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body>
+<div th:replace="~{fragments/fragments::navigationbar(-1)}"></div>
+<div class="container mb-5 center-center">
+    <div class="row">
+        <div class="col">
+            <h1 class="text-center" th:text="#{unableToRetrieveData}">Unable to Retrieve Data</h1>
+            <p class="text-center" th:text="#{dbDifficulties}">Dynamite Dinosaurs is currently experiencing some database difficulties. Please check
+                back
+                again later!</p>
+        </div>
+        <div class="col">
+            <img class="img-fluid" th:src="@{/images/db-error.png}">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="m-5 col text-center">
+            <a class="btn btn-primary" role="button" th:href="@{/}" th:text="#{goHome}">Return to Home</a>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/fragments::footerDinosaur}"></div>
+</body>
+</html>

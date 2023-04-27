@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${dinosaur.getName()}">Dinosaur</title>
+    <meta name="_csrf" th:if="${_csrf != null}" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:if="${_csrf != null}" th:content="${_csrf.headerName}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}">
+    </script>
+    <script defer th:src="@{/javascript/show-digsite-details.js}">
+    </script>
+    <script sec:authorize="isAuthenticated()" defer th:src="@{/javascript/favorite-dinosaur.js}"
+            id='favorite-dinosaur-script'
+            th:data-dinosaurId="${dinosaur.getId()}">
+    </script>
+</head>
+<body>
+<div th:replace="~{fragments/fragments::navigationbar(-1)}"></div>
+<div class="m-5 container-fluid pb-5">
+    <header><h1 class="text-center" th:text="${dinosaur.getName()}">Species Name</h1></header>
+    <div class="row m-5">
+        <div class="col-md-6 text-center">
+            <img class="img-thumbnail" th:src="${dinosaur.getImage()}">
+        </div>
+        <div class="col-md-6">
+            <table class="table table-sm">
+                <tbody>
+                <tr>
+                    <th scope="row" th:text="#{dinosaurs.scientificName}"></th>
+                    <td th:text="${dinosaur.getScientificName()}"></td>
+                </tr>
+                <tr>
+                    <th scope="row" th:text="#{dinosaurs.numberOfSpecimensFound}"></th>
+                    <td th:text="${dinosaur.getNumberSpecimensFound()}"></td>
+                </tr>
+                <tr>
+                    <th scope="row" th:text="#{dinosaurs.diet}"></th>
+                    <td th:text="${dinosaur.getDiet().toString().equals('HERBIVORE')} ? #{diet.herbivore} : #{diet.carnivore}"></td>
+                </tr>
+                <tr>
+                    <th scope="row" th:text="#{dinosaurs.geologicPeriod}"></th>
+                    <th:block th:switch="${dinosaur.getPeriodName()}">
+                        <td th:case="'Cretaceous'"
+                            th:text="#{period.cretaceous} + ' (' + ${dinosaur.getPeriodStartMillionsYears()} + ' - ' + ${dinosaur.getPeriodEndMillionsYears()} + ' ' + #{period.millionYearsAgo} + ')'"></td>
+                        <td th:case="'Jurassic'"
+                            th:text="#{period.jurassic} + ' (' + ${dinosaur.getPeriodStartMillionsYears()} + ' - ' + ${dinosaur.getPeriodEndMillionsYears()} + ' ' + #{period.millionYearsAgo} + ')'"></td>
+                        <td th:case="'Triassic'"
+                            th:text="#{period.triassic} + ' (' + ${dinosaur.getPeriodStartMillionsYears()} + ' - ' + ${dinosaur.getPeriodEndMillionsYears()} + ' ' + #{period.millionYearsAgo} + ')'"></td>
+                    </th:block>
+                </tr>
+                </tbody>
+            </table>
+            <div class="row justify-content-center" th:if="${!discoveries.isEmpty()}">
+                <div class="col-md">
+                    <div class="m-3">
+                        <h3 class="text-center" th:text="#{dinosaurs.foundAtSites}">Found at Sites:</h3>
+                        <ul id="digSiteList" class="list-group">
+                            <li th:id="${speciesDigsite.getId().getDigSite().getId()}"
+                                th:each="speciesDigsite: ${discoveries}" class="list-group-item text-center">
+                                <a th:text="${speciesDigsite.getId().getDigSite().getName()}"
+                                   th:href="@{/digsites/digsite(digsiteId=${speciesDigsite.getId().getDigSite().getId()})}"></a>
+                                <span th:text="'on ' + ${speciesDigsite.getDateDiscovered()}"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center" th:if="${discoveries.isEmpty()}">
+                <div class="m-5 col">
+                    <h3 class="text-center" th:text="#{dinosaurs.noDigSites}">No digsites</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-5">
+        <div sec:authorize="isAuthenticated()" class="m-5 col text-center">
+            <a th:class="${userFavorited}?'btn btn-danger':'invisible btn btn-danger'"
+               id="unfavorite">
+                <i class="fa fa-heart"></i>
+                <span>Favorited</span>
+            </a>
+            <a th:class="${!userFavorited}?'btn btn-outline-danger':'invisible btn btn-outline-danger'"
+               id="favorite">
+                <i class="fa fa-heart"></i>
+                <span th:text="#{addToFavorites}"></span>
+            </a>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="m-5 col text-center">
+            <a class="text-center" th:href="@{/dinosaurs}" th:text="#{dinosaurs.goBack}">Back</a>
+        </div>
+    </div>
+</div>
+</div>
+<div th:replace="~{fragments/fragments::footerDinosaur}"></div>
+</body>
+</html>

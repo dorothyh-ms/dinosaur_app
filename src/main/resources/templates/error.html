@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}">
+    </script>
+</head>
+<body>
+<div th:replace="~{fragments/fragments::navigationbar(-1)}"></div>
+<div class="container mb-5">
+    <div class="row m-5">
+        <div class="col mb-3">
+            <div th:switch="${error}">
+                <h1 th:case="'SpeciesNotAvailableException'" th:text="#{unavailableSpecies}">Unavailable Species</h1>
+                <h1 th:case="'DigSiteNotAvailableException'" th:text="#{unavailableDigSite}">Unavailable Digsite</h1>
+                <h1 th:case="*">Something went wrong.</h1>
+            </div>
+            <div>
+                <p th:if="${status != null}" th:text="#{errorCode} + ': ' + ${status}"></p>
+                <p th:if="${exception != null}" th:text="#{error} + ': ' + ${exception.getMessage()}"></p>
+                <p th:if="${url != null}" th:text="#{failedURL} + ': ' + ${url}"></p>
+            </div>
+        </div>
+        <div th:switch="${error}" class="col mb-3">
+            <img th:case="'SpeciesNotAvailableException'" class="img-fluid" th:src="@{/images/error-dinosaur.jpg}">
+            <img th:case="'DigSiteNotAvailableException'" class="img-fluid" th:src="@{/images/error-digsite.jpg}">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="m-5 col text-center">
+            <a class="btn btn-primary" role="button" th:href="@{/}" th:text="#{goHome}">Return to Home</a>
+        </div>
+    </div>
+</div>
+</div>
+<div th:replace="~{fragments/fragments::footerDinosaur}"></div>
+</body>
+</html>

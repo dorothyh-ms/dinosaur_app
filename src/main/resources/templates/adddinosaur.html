@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Add a new Dinosaur Species</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}">
+    </script>
+    <script th:src="@{/javascript/add-dinosaur.js}" defer></script>
+</head>
+<body>
+<div th:replace="~{fragments/fragments::navigationbar(4)}"></div>
+<div class="container-fluid">
+    <div class="m-5">
+        <header><h1 class="text-center" th:text="#{dinosaurs.addDinosaurSpecies}">Add a Dinosaur</h1></header>
+        <form class="m-5" id="addSpeciesForm">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="mb-3 col">
+                        <label th:text="#{dinosaurs.name}+ ':'" class="form-label" th:for="name">Name:</label>
+                        <input th:id="name" th:name="name" class="form-control" type="text" required/>
+                        <div class="invalid-feedback">
+                            Please enter a name.
+                        </div>
+                    </div>
+                    <div class="mb-3 col">
+                        <label th:text="#{dinosaurs.scientificName} + ':'" class="form-label"
+                               th:for="name">Scientific Name:</label>
+                        <input th:id="scientificName" name="scientificName" class="form-control" type="text" required/>
+                        <div class="invalid-feedback">
+                            Please enter a scientific name.
+                        </div>
+                    </div>
+                    <div class="mb-3 col">
+                        <label th:text="#{dinosaurs.numberOfSpecimensFound} + ':'" class="form-label"
+                               th:for="numberOfSpecimensFound" >Number of Specimens Found: </label>
+                        <input th:id="numberOfSpecimensFound" min="1" th:name="numberOfSpecimensFound" class="form-control" type="number" required/>
+                        <div class="invalid-feedback">
+                            Please enter a number greater than or equal to 1.
+                        </div>
+                        <!--                        <p th:if="${#fields.hasErrors('numberSpecimensFound')}" th:errors="numberOfSpecimensFound"-->
+                        <!--                           class="alert alert-danger">-->
+                        <!--                            Number error</p>-->
+                    </div>
+                    <div class="mb-3 col">
+                        <label th:text="#{dinosaurs.diet} + ':'" class="form-label" th:for="diet">Diet :</label>
+                        <select th:id="diet" th:name="diet" class=" form-select-sm">
+                            <option th:text="#{diet.herbivore}" value="herbivore">Herbivore</option>
+                            <option th:text="#{diet.carnivore}" value="carnivore">Carnivore</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 col">
+                        <label th:text="#{dinosaurs.geologicPeriod} + ':'" class="form-label" th:for="periodName">Geological
+                            Period :</label>
+                        <select th:id="periodName" th:name="periodName" class=" form-select-sm">
+                            <option th:text="#{period.triassic}" value="triassic">Triassic</option>
+                            <option th:text="#{period.jurassic}" value="jurassic">Jurassic</option>
+                            <option th:text="#{period.cretaceous}" value="cretaceous">Cretaceous</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 col">
+                        <label th:text="#{dinosaurs.imageURL} + ':'" class="form-label" th:for="image">Image URL</label>
+                        <input th:id="image" th:name="image" class="form-control" type="text" required/>
+                        <!--                        <p th:if="${#fields.hasErrors('image')}" th:errors="image" class="alert alert-danger">Image-->
+                        <!--                            error</p>-->
+                    </div>
+                    <div class="mb-3 col">
+                        <h3 th:text="#{dinosaurs.addDigsitesSpeciesWasFoundIn}"></h3>
+                    </div>
+                    <div class="mb-3 col" >
+                        <table class="table table-borderless">
+                            <tr>
+                                <th th:text="#{digsites.name}"></th>
+                                <th th:text="#{dinosaurs.dateFound}"></th>
+                            </tr>
+                            <tr th:each="digsite : ${digsites}">
+                                <td>
+                                    <input type="checkbox" name="foundInDigSites"
+                                           th:id="'digsite_' + ${digsite.getId()}"
+                                           th:value="${digsite.getId()}">
+                                    <label th:for="'foundInDigSites'+${digsite.getId()}" th:text="${digsite}"></label>
+                                </td>
+                                <td>
+                                    <input th:for="'dateFound_'+${digsite.getId()}" name="dateFound" type="date"></label>
+                                    <div class="invalid-feedback">
+                                        Please enter today's date or a date in the past.
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <a th:text="#{submit}" class="btn btn-lg btn-primary" th:id="submit_dinosaur"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:replace="~{fragments/fragments::footerDinosaur}"></div>
+</body>
+</html>

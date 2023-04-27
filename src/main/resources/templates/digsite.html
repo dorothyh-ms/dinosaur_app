@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${digSite.getName()}">Title</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}">
+    </script>
+</head>
+<body>
+<div th:replace="~{fragments/fragments::navigationbar(-1)}"></div>
+<div class="container-fluid m-5">
+    <header><h1 class="text-center" th:text="${digSite.getName()}">Dig Site Name</h1></header>
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="m-5 col">
+                <p th:text="#{digsites.country} + ': ' + ${digSite.getCountry()}"></p>
+            </div>
+            <div class="m-5 col">
+                <p th:text="#{digsites.dateFirstExcavated} + ': ' + ${digSite.getFirstExcavation()}"></p>
+            </div>
+            <div class="m-5 col">
+                <p th:text="#{digsites.coordinates} + ': (' + ${digSite.getLatitude()} + ', ' + ${digSite.getLongitude()} + ')'"></p>
+            </div>
+            <div class="row justify-content-center" th:if="${!discoveries.isEmpty()}">
+                <div class="col-md">
+                    <div class="m-3">
+                        <h3 class="text-center" th:text="#{dinosaurs.foundAtSites}">Found at Sites:</h3>
+                        <ul id="digSiteList" class="list-group" >
+                            <li th:id="${speciesDigsite.getId().getSpecies().getId()}" th:each="speciesDigsite: ${discoveries}" class="list-group-item text-center">
+                                <a th:text="${speciesDigsite.getId().getSpecies().getName()}"
+                                   th:href="@{/dinosaurs/dinosaur(dinosaurId=${speciesDigsite.getId().getSpecies().getId()})}"></a>
+                                <span th:text="'on ' + ${speciesDigsite.getDateDiscovered()}"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center" th:if="${discoveries.isEmpty()}">
+                <div class="m-5 col">
+                    <h3 class="text-center" th:text="#{digsites.noSpecies}">No species</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <a class="text-center" th:href="@{/digsites}" th:text="#{digsites.goBack}">Back to Dig Sites</a>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/fragments::footerDinosaur}"></div>
+</body>
+</html>

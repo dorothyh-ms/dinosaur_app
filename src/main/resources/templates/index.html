@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamite Dinosaurs</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}">
+    </script>
+</head>
+<body>
+
+<div th:replace="~{fragments/fragments::navigationbar(0)}"></div>
+<div class="container m-5 center-center">
+    <h1 class="mb-5 text-center">Dynamite Dinosaurs</h1>
+    <div class="row">
+        <a class="btn btn-outline-primary mb-3" th:href="@{/dinosaurs}" th:text="#{homebuttons.viewDinosaurSpecies}">View Dinosaur Species</a>
+    </div>
+    <div class="row">
+        <a class="btn btn-outline-primary mb-3" th:href="@{/digsites}" th:text="#{homebuttons.viewDigSites}">View Dig Sites</a>
+    </div>
+    <div sec:authorize="isAuthenticated()" class="row">
+        <a class="btn btn-outline-primary mb-3" th:href="@{/dinosaurs/add}" th:text="#{homebuttons.addDinosaur}">Add a Dinosaur Species</a>
+    </div>
+    <div sec:authorize="isAuthenticated()" class="row">
+        <a class="btn btn-outline-primary mb-3" th:href="@{/digsites/add}" th:text="#{homebuttons.addDigSite}">Add a Dig Site </a>
+    </div>
+</div>
+<div th:replace="~{fragments/fragments::footerDinosaur}"></div>
+</body>
+</html>

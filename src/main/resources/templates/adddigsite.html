@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}">
+    </script>
+</head>
+<body>
+<div th:replace="~{fragments/fragments::navigationbar(2)}"></div>
+<div class="container-fluid">
+    <div class="m-5">
+        <header><h1 th:text="#{dinosaurs.addDigSites}" class="text-center">Add a Dig Site</h1></header>
+        <form method="post" th:object="${digsite}">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="mb-3 col">
+                        <label th:text="#{digsites.name} + ':'" class="form-label" th:for="*{name}">Name:</label>
+                        <input th:field="*{name}" class="form-control" type="text" required/>
+                        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger">Name error</p>
+                    </div>
+                    <div class="mb-3 col">
+                        <label th:text="#{digsites.country} + ':'" class="form-label" th:for="*{country}">Country:</label>
+                        <input th:field="*{country}" class="form-control" type="text" required/>
+                        <p th:if="${#fields.hasErrors('country')}" th:errors="*{country}" class="alert alert-danger">Country error</p>
+                    </div>
+                    <div class="mb-3 col">
+                        <label th:text="#{digsites.latitude} + ':'" class="form-label" th:for="*{latitude}">Latitude:</label>
+                        <input th:field="*{latitude}" class="form-control" type="number" step="0.01" id="latitude" name="latitude"
+                        min="-90" max="90"/>
+                        <p th:if="${#fields.hasErrors('latitude')}" th:errors="*{latitude}" class="alert alert-danger">Latitude error</p>
+                    </div>
+                    <div class="mb-3 col">
+                        <label th:text="#{digsites.longitude} + ':'"  class="form-label" th:for="*{longitude}">Longitude:</label>
+                        <input th:field="*{longitude}" class="form-control" type="number" step="0.01" id="longitude" name="longitude"
+                        min="-180" max="180"/>
+                        <p th:if="${#fields.hasErrors('longitude')}" th:errors="*{longitude}" class="alert alert-danger">Longitude error</p>
+                    </div>
+                    <div class="mb-3 col">
+                        <label th:text="#{digsites.dateFirstExcavated} + ':'" class="form-label" th:for="*{firstExcavation}">Date of First Excavation:</label>
+                        <input th:field="*{firstExcavation}" class="form-control" type="date" id="firstExcavation" name="firstExcavation" required/>
+                        <p th:if="${#fields.hasErrors('firstExcavation')}" th:errors="*{firstExcavation}" class="alert alert-danger">Date error</p>
+                    </div>
+                    <input th:value="#{submit}" class="btn btn-lg btn-primary" type="submit"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:replace="~{fragments/fragments::footerDinosaur}"></div>
+</body>
+</html>

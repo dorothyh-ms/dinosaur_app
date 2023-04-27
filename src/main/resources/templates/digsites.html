@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="role" sec:authorize="hasRole('ROLE_ADMIN')" content="admin">
+    <meta name="role" sec:authorize="hasRole('ROLE_USER')" content="user">
+    <meta name="role" sec:authorize="hasRole('ROLE_MODERATOR')" content="moderator">
+    <title>Fossil Dig Sites</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}">
+    </script>
+    <script id='radiobutton-script' th:src="@{/javascript/radiobuttons-click-events.js}"
+            data-radiobuttonOption="digsiteOption"
+            data-primaryURL="digsites"
+            data-entity="digsite"
+            defer></script>
+    <script sec:authorize="hasRole('ROLE_ADMIN')" th:src="@{/javascript/update-digsite.js}" defer></script>
+</head>
+<body>
+<div th:replace="~{fragments/fragments::navigationbar(1)}"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 bg-dark position-fixed" id="sidebar">
+            <div class="nav flex-column flex-nowrap vh-100">
+                <ul>
+                    <li>Thing 1</li>
+                    <li>Thing 2</li>
+                    <li>Thing 3</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col offset-2" id="main">
+            <div class="row text-center mt-3">
+                <div class="mb-3 col-10">
+                    <header><h1 class="text-center" th:text="#{dinosaurs.digSites}">.</h1></header>
+                </div>
+                <div sec:authorize="isAuthenticated()" class="mb-3 col-2">
+                    <a class="btn btn-warning" th:href="@{digsites/save}">
+                        <i class="fa fa-save"></i>
+                        <span th:text="#{saveToJSONFile}"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col">
+                    <table class="table table-hover" id="digsiteTable">
+                        <tr>
+                            <th sec:authorize="hasRole('ROLE_ADMIN')"></th>
+                            <th th:text="#{digsites.idNumber}">.</th>
+                            <th th:text="#{digsites.name}">.</th>
+                            <th th:text="#{digsites.country}">.</th>
+                            <th th:text="#{digsites.latitude}">.</th>
+                            <th th:text="#{digsites.longitude}">.</th>
+                            <th th:text="#{digsites.dateFirstExcavated}">.</th>
+                        </tr>
+                        <tr th:id="${digsite.getId()}" th:each="digsite: ${digsites}">
+                            <td sec:authorize="hasRole('ROLE_ADMIN')"><input th:id="'digsiteOption_'+${digsite.getId()}"
+                                                                         class="form-check-input" name="digsiteOption"
+                                                                         type="radio">
+                            </td>
+                            <td th:text="${digsite.getId()}"/>
+                            <td>
+                                <a th:href="@{/digsites/digsite(digsiteId=${digsite.getId()})}"
+                                   th:text="${digsite.getName()}">Link
+                                </a>
+                            </td>
+                            <td>
+                                <span th:id="'digsite_'+${digsite.getId()}+'_country'" th:text="${digsite.getCountry()}"></span>
+                                <input type="text" class="field-digsite invisible"
+                                       th:id="'digsite_'+${digsite.getId()}+'_country_input'"
+                                       th:value="${digsite.getCountry()}">
+                            </td>
+                            <td>
+                                <span th:id="'digsite_'+${digsite.getId()}+'_latitude'" th:text="${digsite.getLatitude()}"></span>
+                                <input type="number" class="field-digsite invisible"
+                                       th:id="'digsite_'+${digsite.getId()}+'_latitude_input'"
+                                       th:value="${digsite.getLatitude()}">
+                            </td>
+                            <td>
+                                <span th:id="'digsite_'+${digsite.getId()}+'_longitude'" th:text="${digsite.getLongitude()}"></span>
+                                <input type="number" class="field-digsite invisible"
+                                       th:id="'digsite_'+${digsite.getId()}+'_longitude_input'"
+                                       th:value="${digsite.getLongitude()}">
+                            </td>
+                            <td>
+                                <span th:id="'digsite_'+${digsite.getId()}+'_date'" th:text="${digsite.getFirstExcavation()}"></span>
+                                <input type="date" class="field-digsite invisible"
+                                       th:id="'digsite_'+${digsite.getId()}+'_date_input'"
+                                       th:value="${digsite.getFirstExcavation()}">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div th:replace="~{fragments/fragments::createEditDeleteSaveButton('digsite')}"></div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/fragments::footerDinosaur}"></div>
+</body>
+</html>
