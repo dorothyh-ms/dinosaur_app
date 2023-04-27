@@ -53,7 +53,7 @@ Can see "favorite" pages, the "favorite" button, "add" pages, the "add" button, 
 ## Moderators
 Can call all GET, PATCH, and POST rest API methods, including the POST method to add a SpeciesUserFavorite object.
 Can see "favorite" pages, the "favorite" button, "add" pages, the "add" button, "Save Changes" button, and the viewing history page. 
-2) Username "piet" - password "bash"
+1) Username "piet" - password "bash"
 2) User "jeroen" - password "python"
 3) User "rony" - password "talend"
 
